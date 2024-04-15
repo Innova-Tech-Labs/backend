@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const Scavenger = require('./models/Scavenger.js'); // Ensure the path is correct
+const Scavenger = require('./models/Scavenger.js'); 
 
 async function seed() {
   mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
-  // Ensure the database connection is established before seeding
   await mongoose.connection.once('open', async () => {
     console.log('Connected to the database');
 
@@ -18,8 +17,8 @@ async function seed() {
         { description: 'Find the Alice in Wonderland statue', points: 10 },
         { description: 'Locate the oldest tree in the park', points: 20 }
       ],
-      createdBy: new mongoose.Types.ObjectId(), // Correct instantiation
-      participants: [new mongoose.Types.ObjectId()] // Correct instantiation
+      createdBy: new mongoose.Types.ObjectId(), 
+      participants: [new mongoose.Types.ObjectId()]
     };
 
     try {

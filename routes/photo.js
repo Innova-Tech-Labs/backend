@@ -17,7 +17,7 @@ const upload = multer({ storage: storage });
 router.post('/upload', upload.single('photo'), async (req, res) => {
     try {
         const photo = new Photo({
-            userID: req.user._id, // Assuming user ID is available from session
+            userID: req.user._id, 
             imagePath: req.file.path
         });
         await photo.save();

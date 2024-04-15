@@ -3,11 +3,19 @@ const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const socialRoutes = require('./routes/socials')
+
+const scavengerRouter = require('./routes/scavenger');
+const photoRouter = require('./routes/photo');
+const seedRouter = require('./routes/seed');
+const challengesRouter = require('./routes/challenges');
+const badgesRouter = require('./routes/badges');
+const socialRoutes = require('./routes/social');
+const socialShareRoutes = require('./routes/socialShare');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
 
 // Setup for multer to handle file uploads
 const storage = multer.diskStorage({
@@ -25,20 +33,18 @@ app.post('/upload', upload.single('file'), (req, res) => {
     res.json({ message: 'File uploaded successfully', filename: req.file.filename });
 });
 
-// Import routes
-const scavengerRouter = require('./routes/scavenger');
-const photoRouter = require('./routes/photo');
-const seedRouter = require('./routes/seed');
-
-// Use routes
 app.use('/scavenger', scavengerRouter);
 app.use('/photos', photoRouter);
 app.use('/seed', seedRouter);
-app.use('/api/social', socialRoutes);
+app.use('/challenges', challengesRouter);
+app.use('/badges', badgesRouter);
+app.use('/social', socialRoutes);
+app.use('/socialShare', socialShareRoutes);
 
-const PORT = process.env.PORT || 3001;
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
-    })
-    .catch(err => console.error('Could not connect to database:', err));
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.send('File uploaded successfully');
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
