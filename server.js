@@ -2,11 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
-const cors = require('cors'); 
+const cors = require('cors');
+const socialRoutes = require('./routes/socials')
 
 const app = express();
 app.use(express.json());
-app.use(cors()); 
+app.use(cors());
 
 // Setup for multer to handle file uploads
 const storage = multer.diskStorage({
@@ -27,12 +28,13 @@ app.post('/upload', upload.single('file'), (req, res) => {
 // Import routes
 const scavengerRouter = require('./routes/scavenger');
 const photoRouter = require('./routes/photo');
-const seedRouter = require('./routes/seed'); 
+const seedRouter = require('./routes/seed');
 
 // Use routes
 app.use('/scavenger', scavengerRouter);
 app.use('/photos', photoRouter);
 app.use('/seed', seedRouter);
+app.use('/api/social', socialRoutes);
 
 const PORT = process.env.PORT || 3001;
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
