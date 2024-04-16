@@ -1,4 +1,5 @@
 require('dotenv').config();
+console.log('AI API Key:', process.env.AI_API_KEY);
 const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');

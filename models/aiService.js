@@ -2,14 +2,18 @@ const axios = require('axios');
 const fs = require('fs');
 const FormData = require('form-data');
 
-const AI_API_URL = 'https://api.openai.com/v1/images'; 
-const AI_API_KEY = process.env.AI_API_KEY;
+
+
 
 async function describeImage(imagePath) {
     const data = new FormData();
     data.append('file', fs.createReadStream(imagePath));
 
     try {
+        const AI_API_URL = process.env.AI_API_URL;
+        const AI_API_KEY = process.env.AI_API_KEY;
+        console.log(AI_API_URL);
+        console.log(AI_API_KEY);
         const response = await axios.post(`${AI_API_URL}/generate-description`, data, {
             headers: {
                 'Authorization': `Bearer ${AI_API_KEY}`,
