@@ -10,7 +10,6 @@ const seedRouter = require('./routes/seed');
 const challengesRouter = require('./routes/challenges');
 const badgesRouter = require('./routes/badges');
 const socialRoutes = require('./routes/socials');
-const socialShareRoutes = require('./routes/socialShare');
 const photoRoutes = require('./routes/photoRoutes');
 
 const app = express();
@@ -35,11 +34,21 @@ app.use('/seed', seedRouter);
 app.use('/challenges', challengesRouter);
 app.use('/badges', badgesRouter);
 app.use('/social', socialRoutes);
-// app.use('/socialShare', socialShareRoutes);
 app.use('/photos', photoRoutes);
 
 app.post('/upload', upload.single('file'), (req, res) => {
     res.send('File uploaded successfully');
+});
+
+// New route to get the uploads
+app.get('/upload', async (req, res) => {
+    try {
+        const uploads = await Upload.find({});
+        res.json(uploads);
+    } catch (error) {
+        console.error('Failed to fetch uploads:', error);
+        res.status(500).send('Failed to fetch uploads');
+    }
 });
 
 const PORT = process.env.PORT || 3000;
