@@ -1,10 +1,19 @@
 const express = require('express');
 const multer = require('multer');
 const Photo = require('../models/Photo');
-const { checkImageAgainstItems } = require('../models/aiService');
+const { describeImage } = require('../models/aiService'); // Ensure you have this function implemented
 
 const router = express.Router();
-const storage = multer.memoryStorage();
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + file.originalname);
+    }
+});
+
 const upload = multer({ storage: storage });
 
 router.post('/upload', upload.single('photo'), async (req, res) => {
@@ -13,19 +22,31 @@ router.post('/upload', upload.single('photo'), async (req, res) => {
     }
 
     try {
-        const results = await checkImageAgainstItems(req.file.buffer);
-        const newPhoto = new Photo({
-            userId: req.user._id, // Assuming user ID is available
-            imagePath: req.file.path // Adjust according to your storage strategy
+        const photo = new Photo({
+            userId: req.user._id,
+            imagePath: req.file.path
         });
-        await newPhoto.save();
+        await photo.save();
+
+        // Now send this photo to OpenAI for description
+        const description = await describeImage(req.file.path);
+
         res.json({
-            message: 'Photo processed and saved successfully',
-            results: results
+            message: 'Photo uploaded and described successfully',
+            imagePath: req.file.path,
+            description: description
         });
     } catch (error) {
-        console.error('Error processing photo:', error);
-        res.status(500).send('Failed to process photo');
+        res.status(500).json({ message: 'Error processing photo', error: error.message });
+    }
+});
+
+router.get('/', async (req, res) => {
+    try {
+        const photos = await Photo.find({ userId: req.user._id });
+        res.status(200).json(photos);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching photos', error: error.message });
     }
 });
 
