@@ -1,5 +1,5 @@
 const express = require('express');
-const { generateSocialShareLinks } = require('./utility/socialShare');
+const { generateSocialShareLinks } = require('../utils/socialShare');
 const Scavenger = require('../models/Scavenger');
 const router = express.Router();
 
