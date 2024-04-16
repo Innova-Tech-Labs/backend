@@ -52,10 +52,15 @@ app.get('/upload', async (req, res) => {
     }
 });
 
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.send('File uploaded successfully');
+});
+
+
 const PORT = process.env.PORT || 3000;
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect('mongodb+srv://jnstaley1:L1yZNjKaMSa261VH@database.vxt7mme.mongodb.net/Lists?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         app.listen(PORT, () => console.log(`Server running on ${PORT}`));
-        console.log('Connected to the database');
+        console.log('Connected to the Lists database');
     })
-    .catch(err => console.error('Could not connect to database:', err));
+    .catch(err => console.error('Could not connect to Lists database:', err));
