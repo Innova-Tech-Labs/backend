@@ -1,86 +1,49 @@
-'use strict';
-
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+const multer = require('multer');
 const mongoose = require('mongoose');
-const Book = require('./models/bookModel');
+const cors = require('cors');
+
+// Routes
+const scavengerRouter = require('./routes/scavenger');
+const photoRouter = require('./routes/photo');
+const seedRouter = require('./routes/seed');
+const challengesRouter = require('./routes/challenges');
+const badgesRouter = require('./routes/badges');
+const socialRoutes = require('./routes/social');
+const socialShareRoutes = require('./routes/socialShare');
+const photoRoutes = require('./routes/photoRoutes');
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-const PORT = process.env.PORT || 3001;
-mongoose.connect(process.env.MONGO_URL)
-
-app.get('/test', (request, response) => {
-  response.send('test request received')
-})
-
-app.get('/books', handleGetBooks);
-app.post('/books', handlePostBooks);
-app.delete('/books/:id', handleDeleteBooks);
-app.put('/books/:id', handlePutBooks)
-
-async function handleGetBooks(req, res) {
-  const searchObject = {}
-  if (req.query.email) {
-    searchObject.email = req.query.email;
-  }
-  try {
-    const booksFromDb = await Book.find(searchObject);
-    if (booksFromDb.length > 0) {
-      res.status(200).send(booksFromDb);
-    } else {
-      res.status(404).send('error');
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + file.originalname);
     }
-  } catch (e) {
-    console.error(e);
-    res.status(500).send('server error');
-  }
-}
+});
+const upload = multer({ storage: storage });
 
+// Routes usage
+app.use('/scavenger', scavengerRouter);
+app.use('/photos', photoRouter);
+app.use('/seed', seedRouter);
+app.use('/challenges', challengesRouter);
+app.use('/badges', badgesRouter);
+app.use('/social', socialRoutes);
+app.use('/socialShare', socialShareRoutes);
+app.use('/photos', photoRoutes);
 
-async function handlePostBooks(req, res) {
-  const { email } = req.query;
-  const { title, description, status } = req.body;
-  try {
-    const newBook = await Book.create({ ...req.body, email })
-    res.status(200).send(newBook)
-  } catch (e) {
-    res.status(500).send('server error');
-  }
-}
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.send('File uploaded successfully');
+});
 
-async function handleDeleteBooks(req, res) {
-  const { id } = req.params;
-  const { email } = req.query;
-
-  try {
-    const book = await Book.findOne({ _id: id, email });
-    if (!book) res.status(400).send('unable to delete book');
-    else {
-      await Book.findByIdAndDelete(id);
-      res.status(204).send('bye book');
-    }
-  } catch (e) {
-    res.status(500).send('server error');
-  }
-}
-
-async function handlePutBooks(req, res) {
-  const { id } = req.params;
-  const { email } = req.query;
-  try {
-    const book = await Book.findOne({ _id: id, email });
-    if (!book) res.status(400).send('unable to update book');
-    else {
-      const updatedBook = await Book.findByIdAndUpdate(id, { ...req.body, email }, { new: true, overwrite: true });
-      res.status(200).send(updatedBook);
-    }
-  } catch (e) {
-    res.status(500).send('server error');
-  }
-}
-
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+const PORT = process.env.PORT || 3000;
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`)))
+    .catch(err => console.error('Could not connect to database:', err));
