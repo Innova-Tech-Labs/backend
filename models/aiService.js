@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-const AI_API_URL = 'insert-link';  // use actual URL of your AI service endpoint
-const AI_API_KEY = process.env.AI_API_KEY; // update with  API key whenit's available
+const AI_API_URL = 'https://api.openai.com/v1/chat/completions'; 
+const AI_API_KEY = process.env.AI_API_KEY;
 
 async function checkImageAgainstItems(imageBuffer) {
     try {
