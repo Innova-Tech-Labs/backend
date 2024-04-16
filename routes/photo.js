@@ -17,7 +17,7 @@ const upload = multer({ storage: storage });
 router.post('/upload', upload.single('photo'), async (req, res) => {
     try {
         const photo = new Photo({
-            userID: req.user._id, 
+            userId: req.user._id, 
             imagePath: req.file.path
         });
         await photo.save();
@@ -29,7 +29,7 @@ router.post('/upload', upload.single('photo'), async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const photos = await Photo.find({ userID: req.user._id });
+        const photos = await Photo.find({ userId: req.user._id });
         res.status(200).json(photos);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching photos', error: error.message });

@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 // Join a challenge
 router.put('/join/:id', async (req, res) => {
     const challengeId = req.params.id;
-    const userId = req.user._id; // 
+    const userId = req.user._id;
     try {
         const challenge = await Challenge.findByIdAndUpdate(
             challengeId,

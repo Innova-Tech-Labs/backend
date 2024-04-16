@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-const AI_API_URL = 'insert-link';  
-const AI_API_KEY = process.env.AI_API_KEY;//update when we have the key
+const AI_API_URL = 'insert-link';  // use actual URL of your AI service endpoint
+const AI_API_KEY = process.env.AI_API_KEY; // update with  API key whenit's available
 
 async function checkImageAgainstItems(imageBuffer) {
     try {

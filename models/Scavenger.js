@@ -7,7 +7,7 @@ const scavengerSchema = new mongoose.Schema({
     tasks: [{
         description: String,
         points: Number,
-        proofOfCompletion: String // URL to the completion proof
+        proofOfCompletion: String
     }],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
