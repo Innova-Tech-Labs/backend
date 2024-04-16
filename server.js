@@ -4,7 +4,6 @@ const multer = require('multer');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// Routes
 const scavengerRouter = require('./routes/scavenger');
 const photoRouter = require('./routes/photo');
 const seedRouter = require('./routes/seed');
@@ -44,6 +43,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`)))
+mongoose.connect(process.env.MONGO_URL)
+    .then(() => {
+        app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+        console.log('Connected to the database');
+    })
     .catch(err => console.error('Could not connect to database:', err));

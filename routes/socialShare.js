@@ -1,3 +1,4 @@
+const express = require('express');
 
 function generateSocialShareLinks(title, url, imageUrl) {
   const encodedTitle = encodeURIComponent(title);

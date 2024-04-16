@@ -1,8 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const { checkImageAgainstItems } = require('./models/aiService');
-const Photo = require('./models/Photo');
-const aiService = require('./models/aiService');
+const Photo = require('../models/Photo');
+const { checkImageAgainstItems } = require('../models/aiService');
 
 const router = express.Router();
 const storage = multer.memoryStorage();
