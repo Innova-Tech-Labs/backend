@@ -1,4 +1,5 @@
 require('dotenv').config();
+console.log('AI API Key:', process.env.AI_API_KEY);
 const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
@@ -10,7 +11,6 @@ const seedRouter = require('./routes/seed');
 const challengesRouter = require('./routes/challenges');
 const badgesRouter = require('./routes/badges');
 const socialRoutes = require('./routes/socials');
-const socialShareRoutes = require('./routes/socialShare');
 const photoRoutes = require('./routes/photoRoutes');
 
 const app = express();
@@ -35,17 +35,32 @@ app.use('/seed', seedRouter);
 app.use('/challenges', challengesRouter);
 app.use('/badges', badgesRouter);
 app.use('/social', socialRoutes);
-// app.use('/socialShare', socialShareRoutes);
-app.use('/photos', photoRoutes);
+//app.use('/photos', photoRoutes);
 
 app.post('/upload', upload.single('file'), (req, res) => {
     res.send('File uploaded successfully');
 });
 
+// New route to get the uploads
+app.get('/upload', async (req, res) => {
+    try {
+        const uploads = await Upload.find({});
+        res.json(uploads);
+    } catch (error) {
+        console.error('Failed to fetch uploads:', error);
+        res.status(500).send('Failed to fetch uploads');
+    }
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.send('File uploaded successfully');
+});
+
+
 const PORT = process.env.PORT || 3000;
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect('mongodb+srv://jnstaley1:L1yZNjKaMSa261VH@database.vxt7mme.mongodb.net/Lists?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         app.listen(PORT, () => console.log(`Server running on ${PORT}`));
-        console.log('Connected to the database');
+        console.log('Connected to the Lists database');
     })
-    .catch(err => console.error('Could not connect to database:', err));
+    .catch(err => console.error('Could not connect to Lists database:', err));
