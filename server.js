@@ -10,7 +10,7 @@ const photoRouter = require('./routes/photo');
 const seedRouter = require('./routes/seed');
 const challengesRouter = require('./routes/challenges');
 const badgesRouter = require('./routes/badges');
-const socialRoutes = require('./routes/social');
+const socialRoutes = require('./routes/socials');
 const socialShareRoutes = require('./routes/socialShare');
 const photoRoutes = require('./routes/photoRoutes');
 
