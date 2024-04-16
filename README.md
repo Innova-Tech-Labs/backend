@@ -72,3 +72,5 @@ The backend server supports a range of functionalities that are crucial for the 
 
 ##
 - last upload 2pm on 4/16/2024 PST
+
+node test/testDescribeImage.js

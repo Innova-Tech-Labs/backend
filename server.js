@@ -35,7 +35,7 @@ app.use('/seed', seedRouter);
 app.use('/challenges', challengesRouter);
 app.use('/badges', badgesRouter);
 app.use('/social', socialRoutes);
-app.use('/photos', photoRoutes);
+//app.use('/photos', photoRoutes);
 
 app.post('/upload', upload.single('file'), (req, res) => {
     res.send('File uploaded successfully');
