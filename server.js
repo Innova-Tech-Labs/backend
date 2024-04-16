@@ -35,7 +35,7 @@ app.use('/seed', seedRouter);
 app.use('/challenges', challengesRouter);
 app.use('/badges', badgesRouter);
 app.use('/social', socialRoutes);
-app.use('/socialShare', socialShareRoutes);
+// app.use('/socialShare', socialShareRoutes);
 app.use('/photos', photoRoutes);
 
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -45,7 +45,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 const PORT = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGO_URL)
     .then(() => {
-        app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+        app.listen(PORT, () => console.log(`Server running on ${PORT}`));
         console.log('Connected to the database');
     })
     .catch(err => console.error('Could not connect to database:', err));
