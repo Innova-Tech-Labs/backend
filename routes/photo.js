@@ -1,8 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const Photo = require('../models/Photo');
+const { describeImage } = require('../models/aiService'); // Ensure you have this function implemented
 const router = express.Router();
-const { describeImage } = require('../models/aiService');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -15,22 +15,29 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get('/john', async (req, res) => {
-    const description = await describeImage();
-    res.send("ok")
-})
-
-// Upload a photo
+// Upload a photo and describe it
 router.post('/upload', upload.single('photo'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No photo uploaded');
+    }
+
     try {
         const photo = new Photo({
             userId: req.user._id,
             imagePath: req.file.path
         });
         await photo.save();
-        res.status(201).json({ message: 'Photo uploaded successfully', photo });
+
+        // Now send this photo to AI for description
+        const description = await describeImage(req.file.path);
+
+        res.status(201).json({
+            message: 'Photo uploaded and described successfully',
+            imagePath: req.file.path,
+            description: description
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error uploading photo', error: error.message });
+        res.status(500).json({ message: 'Error processing photo', error: error.message });
     }
 });
 
@@ -44,7 +51,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Get a photo by ID
+// Get a single photo by ID
 router.get('/:id', async (req, res) => {
     const photoId = req.params.id;
     try {
