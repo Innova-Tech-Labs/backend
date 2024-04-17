@@ -1,24 +1,30 @@
 const express = require('express');
 const multer = require('multer');
-const Photo = require('../models/Photo'); 
+const Photo = require('../models/Photo');
 const router = express.Router();
+const { describeImage } = require('../models/aiService');
 
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, './uploads/');
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, Date.now() + file.originalname);
     }
 });
 
 const upload = multer({ storage: storage });
 
+router.get('/john', async (req, res) => {
+    const description = await describeImage();
+    res.send("ok")
+})
+
 // Upload a photo
 router.post('/upload', upload.single('photo'), async (req, res) => {
     try {
         const photo = new Photo({
-            userId: req.user._id, 
+            userId: req.user._id,
             imagePath: req.file.path
         });
         await photo.save();

@@ -6,15 +6,20 @@ const { describeImage } = require('../models/aiService'); // Ensure you have thi
 const router = express.Router();
 
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, './uploads/');
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, Date.now() + file.originalname);
     }
 });
 
 const upload = multer({ storage: storage });
+
+router.get('/john', async (req, res) => {
+    const description = await describeImage(req.file.path);
+    res.send("ok")
+})
 
 router.post('/upload', upload.single('photo'), async (req, res) => {
     if (!req.file) {

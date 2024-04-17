@@ -12,7 +12,7 @@ const seedRouter = require('./routes/seed');
 const challengesRouter = require('./routes/challenges');
 const badgesRouter = require('./routes/badges');
 const socialRoutes = require('./routes/socials');
-const photoRoutes = require('./routes/photoRoutes');
+//const photoRoutes = require('./routes/photoRoutes');
 const listRoutes = require('./routes/lists');
 
 const app = express();
@@ -37,7 +37,7 @@ app.use('/seed', seedRouter);
 app.use('/challenges', challengesRouter);
 app.use('/badges', badgesRouter);
 app.use('/social', socialRoutes);
-app.use('/photos', photoRoutes);
+//app.use('/photos', photoRoutes);
 app.use('/lists', listRoutes);
 
 app.post('/upload', upload.single('file'), (req, res) => {
