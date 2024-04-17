@@ -65,6 +65,26 @@ The backend server supports a range of functionalities that are crucial for the 
 - **POST /badges:** Returns a success message upon successful badge award.
 - **GET /badges/user/:userId:** Returns an array of badges awarded to the specified user.
 
+
+### /lists
+
+**Description**: Manages operations related to lists such as creating, retrieving, updating, and deleting lists.
+**Endpoints:**
+- **GET /lists:** Retrieves all lists.
+- **GET /lists/:id:** Retrieves a specific list by its ID.
+- **POST /lists:** Creates a new list.
+- **PUT /lists/:id:** Updates an existing list by its ID.
+- **DELETE /lists/:id:** Deletes a list by its ID.
+
+#### Expected Output:
+
+- **GET /lists:** Returns an array of list objects.
+- **GET /lists/:id:** Returns the specified list object if found, otherwise returns a 404 status with an error message.
+- **POST /lists:** Returns the newly created list object.
+- **PUT /lists/:id:** Returns the updated list object if the update is successful, otherwise returns a 404 status if the list is not found.
+- **DELETE /lists/:id:** Returns a success message indicating deletion if the delete operation is successful, otherwise returns a 404 status if the list is not found.
+
+
 ## Additional Functionality
 
 - **Social Share Tracking:** Implement functionality to monitor and record social shares for each piece of content, enhancing engagement analytics.
