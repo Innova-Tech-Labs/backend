@@ -1,9 +1,9 @@
-const { describeImage } = require('../models/aiService');
+const { processImage } = require('../models/aiService');
 
 // Path to your test image
 const imagePath = './image/dog.jpeg';
 
-describeImage(imagePath)
+processImage(imagePath)
   .then(description => {
     console.log('Image description:', description);
   })
