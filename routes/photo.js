@@ -17,13 +17,15 @@ const upload = multer({ storage: storage });
 
 // Upload a photo and describe it
 router.post('/upload', upload.single('photo'), async (req, res) => {
+    console.log("Upload", upload.storage.getFilename) 
+    console.log("req",req.file)
     if (!req.file) {
         return res.status(400).send('No photo uploaded');
     }
 
     try {
         const photo = new Photo({
-            userId: req.user._id,
+            // userId: req.user._id,
             imagePath: req.file.path
         });
         await photo.save();
