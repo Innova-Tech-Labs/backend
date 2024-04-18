@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const List = require('../models/Lists'); 
+const List = require('../models/Lists');
 
 router.get('/', async (req, res) => {
     try {
@@ -9,19 +9,6 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.error('Failed to fetch lists:', error);
         res.status(500).send('Failed to fetch lists: ' + error.message);
-    }
-});
-
-router.get('/:id', async (req, res) => {
-    try {
-        const list = await List.findById(req.params.id);
-        if (!list) {
-            return res.status(404).send('List not found');
-        }
-        res.json(list);
-    } catch (error) {
-        console.error('Error fetching list:', error);
-        res.status(500).send('Error fetching list: ' + error.message);
     }
 });
 

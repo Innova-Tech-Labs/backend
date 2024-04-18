@@ -4,7 +4,7 @@ const Photo = require('../models/Photo');
 const { describeImage } = require('../models/aiService'); // Ensure you have this function implemented
 const router = express.Router();
 
-const storage = multer.diskStorage({
+const fileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/');
     },
@@ -12,6 +12,8 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + file.originalname);
     }
 });
+
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
@@ -22,14 +24,24 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     try {
+        console.log("Upload", upload.storage.getFilename)
+        console.log("req", req.file)
         const photo = new Photo({
-            userId: req.user._id,
+            // userId: req.user._id,
             imagePath: req.file.path
+
         });
         await photo.save();
 
         // Now send this photo to AI for description
-        const description = await describeImage(req.file.path);
+        let image = req.file.buffer.toString("base64")
+        let imageName = req.file.originalname
+        let mimeType = req.file.mimetype
+        //const description = await describeImage(image, imageName, mimeType);
+        const apiResponse = await describeImage(image, imageName, mimeType);
+
+        // Extract the description content
+        const description = apiResponse.choices[0].message.content;
 
         res.status(201).json({
             message: 'Photo uploaded and described successfully',

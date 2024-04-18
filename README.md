@@ -25,25 +25,14 @@ The backend server supports a range of functionalities that are crucial for the 
 
 ### /photo
 
-**Description:** Handles photo uploads and retrieval of user-specific photos.  
+**Description:** Handles photo uploads and retrieval of user-specific photos.  Extends photo upload functionality by analyzing and describing photo content using AI services.
 **Endpoints:**
-- **POST /photo/upload:** Uploads a photo.
-- **GET /photo:** Retrieves all photos uploaded by the user.
+- **POST /photo/upload:**  a photo and generates a description using AI
+- **GET /photo:** Retrieves all photos uploaded by the user.Retrieves all photos uploaded by the user with their descriptions.
 
 **Expected Output:**
 - **POST /photo/upload:** Returns a success message upon successful photo upload.
 - **GET /photo:** Returns an array of photo objects uploaded by the user.
-
-### /photoRoutes
-
-**Description:** Extends photo upload functionality by analyzing and describing photo content using AI services.  
-**Endpoints:**
-- **POST /photoRoutes/upload:** Uploads a photo and generates a description using AI.
-- **GET /photoRoutes:** Retrieves all photos uploaded by the user with their descriptions.
-
-**Expected Output:**
-- **POST /photoRoutes/upload:** Returns a success message on successful photo upload with a description.
-- **GET /photoRoutes:** Returns an array of photo objects with descriptions uploaded by the user.
 
 ### /social
 
@@ -91,6 +80,7 @@ The backend server supports a range of functionalities that are crucial for the 
 - **Customize Share Messages:** Provide options for users to customize share messages before generating social share links, allowing for personalized communication.
 
 ##
-- last upload 2pm on 4/16/2024 PST
+- last upload 2:30pm on 4/17/2024 PST
 
 node test/testDescribeImage.js
+viv - working on photo.js page to change output
