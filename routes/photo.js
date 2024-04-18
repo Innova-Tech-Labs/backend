@@ -17,7 +17,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
-// Upload a photo and describe it
+// TODO: Upload a photo and give us content instead of message, comment out what i changed viv
 router.post('/upload', upload.single('photo'), async (req, res) => {
 
 
@@ -39,7 +39,11 @@ router.post('/upload', upload.single('photo'), async (req, res) => {
         let image = req.file.buffer.toString("base64")
         let imageName = req.file.originalname
         let mimeType = req.file.mimetype
-        const description = await describeImage(image, imageName, mimeType);
+        //const description = await describeImage(image, imageName, mimeType);
+        const apiResponse = await describeImage(image, imageName, mimeType);
+
+        // Extract the description content
+        const description = apiResponse.choices[0].message.content;
 
         res.status(201).json({
             message: 'Photo uploaded and described successfully',

@@ -83,3 +83,4 @@ The backend server supports a range of functionalities that are crucial for the 
 - last upload 2:30pm on 4/17/2024 PST
 
 node test/testDescribeImage.js
+viv - working on photo.js page to change output
