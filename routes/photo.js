@@ -17,10 +17,8 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
-// TODO: Upload a photo and give us content instead of message, comment out what i changed viv
-router.post('/upload', upload.single('photo'), async (req, res) => {
-
-
+// Upload a photo and describe it
+router.post('/upload', upload.single('file'), async (req, res) => {
     if (!req.file) {
         return res.status(400).send('No photo uploaded');
     }
